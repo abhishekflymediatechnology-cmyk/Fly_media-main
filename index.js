@@ -47,7 +47,7 @@ const PORT = process.env.PORT || 8000;
 // ✅ CORS CONFIG (VERY IMPORTANT)
 app.use(
   cors({
-    origin: 'http://localhost:3000', 'https://theenglishraj.com',// frontend URL
+    origin: 'http://localhost:3000',  // frontend URL
     credentials: true,               // allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
