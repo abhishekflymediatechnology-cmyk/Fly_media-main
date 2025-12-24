@@ -29,11 +29,10 @@
 
 
 
-
 require('dotenv').config(); // MUST be first
 
 const express = require('express');
-const cors = require('cors');              // ✅ ADD THIS
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const router = require('./route/Router');
@@ -44,11 +43,26 @@ const app = express();
 // ✅ Load environment variables
 const PORT = process.env.PORT || 8000;
 
-// ✅ CORS CONFIG (VERY IMPORTANT)
+// ✅ Allowed frontend origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://theenglishraj.com',
+];
+
+// ✅ CORS CONFIG (FIXED)
 app.use(
   cors({
-    origin: 'http://localhost:3000',  // frontend URL
-    credentials: true,               // allow cookies
+    origin: function (origin, callback) {
+      // allow requests with no origin (Postman, server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS not allowed for this origin'));
+      }
+    },
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
